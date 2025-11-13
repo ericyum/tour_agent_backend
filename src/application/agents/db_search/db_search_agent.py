@@ -8,8 +8,12 @@ from src.infrastructure.persistence.database import get_db_connection
 # This function is a helper to load the category mappings, similar to what's in app.py
 # In a more advanced architecture, this might be a shared service.
 def get_title_to_cat_names_map():
+    # Auto-detect database path for festivals metadata
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-    festivals_dir = os.path.join(project_root, "festivals")
+    parent_dir = os.path.dirname(project_root)
+    default_database_path = os.path.join(parent_dir, "tour_agent_database")
+    database_path = os.getenv("DATABASE_PATH", default_database_path)
+    festivals_dir = os.path.join(database_path, "festivals")
     all_categories = {}
     title_to_cat_names = {}
     try:
